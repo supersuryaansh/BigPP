@@ -1,18 +1,27 @@
 <?php
+
+//Include essential functions file
+include_once("includes/essentials.php");
+
+//check if BigPP is configured
+//if not then configure
+if (!file_exists(ph_include('sql.php'))) {
+  header("Location: PPinsert.php");
+  die();
+}
+
+
 // Start the session
 session_start();
-
-//Include essential functions file 
-include_once("includes/essentials.php");
 
 ###
 ## Set user email and password in server variables
 ###
 if(!empty($_POST['userEmail'])){
   //Validating if the submitted input is an Email address
-    if(filter_var($_POST['userEmail'], FILTER_VALIDATE_EMAIL)){ 
-   $_SESSION["userEmail"] = filter_var(trim($_POST['userEmail']), FILTER_SANITIZE_EMAIL); 
-  }  
+    if(filter_var($_POST['userEmail'], FILTER_VALIDATE_EMAIL)){
+   $_SESSION["userEmail"] = filter_var(trim($_POST['userEmail']), FILTER_SANITIZE_EMAIL);
+  }
 }elseif(!empty($_POST['userPassword'])){
   $_SESSION["userPassword"] = filter_var($_POST['userPassword'], FILTER_SANITIZE_STRING);
 }
@@ -44,7 +53,7 @@ if ($_SESSION['userEmail'] && $_SESSION['userPassword']) {
         unset($_SESSION['userEmail']);
         unset($_SESSION['userPassword']);
         unset($_SESSION['userExist']);
-        header("Location: #");
+        header("Location: google.com");
         die();
       }
   }else{
@@ -96,17 +105,17 @@ if ($_SESSION['userEmail'] && $_SESSION['userPassword']) {
             echo '<h1 class="mb-4">Log in / Register</h1>';
           }
           ?>
-          
+
           <?php if (!isset($_SESSION['userEmail']) && !empty($_POST['userEmail'])) {
               // Display error if Email is invalid
            echo  '<p style="color: red;">Not a Valid Email Address</p>';
-          } 
+          }
                 if (isset($_SESSION['userPassword']) && $_SESSION['userExist']) {
                   // Display error if password is incorrect
                   if (!password_verify($_SESSION['userPassword'], $userData['userPassword'])) {
                     echo  '<p style="color: red;">Password is Invalid</p>';
                   }
-                  
+
                 }
           ?>
 
@@ -125,7 +134,7 @@ if ($_SESSION['userEmail'] && $_SESSION['userPassword']) {
                           echo  '<input type="submit" class="btn btn-primary" value="Create Account" />';
                         }
                       ?>
-                    </form>            
+                    </form>
          <?php }?>
 
          <!-- End of Login Form-->
